@@ -4,77 +4,107 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Blog Tristan - Sejarah Sistem Operasi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
+    /* ======== RESET & BASE ======== */
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       font-family: 'Poppins', sans-serif;
       background-color: #0d0d0d;
       color: #f1f1f1;
       line-height: 1.6;
+      overflow-x: hidden;
     }
 
+    /* ======== HEADER ======== */
     header {
       text-align: center;
-      background: linear-gradient(180deg, #1a1a1a, #0d0d0d);
-      padding: 80px 20px 60px;
+      background: radial-gradient(circle at center, #1a1a1a 0%, #000 100%);
+      padding: 100px 20px 70px;
       border-bottom: 2px solid #d4af37;
+      animation: fadeIn 1.5s ease-out;
     }
 
     header h1 {
-      font-size: 60px;
+      font-size: 64px;
       color: #d4af37;
-      margin-bottom: 10px;
-      letter-spacing: 3px;
+      margin-bottom: 15px;
+      letter-spacing: 4px;
+      text-shadow: 0 0 10px #d4af37;
+      animation: glow 2s ease-in-out infinite alternate;
     }
 
     header p {
       font-size: 18px;
       color: #ccc;
+      opacity: 0.9;
     }
 
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #d4af37; }
+      to { text-shadow: 0 0 20px #ffcc00, 0 0 40px #d4af37; }
+    }
+
+    /* ======== NAVBAR ======== */
     nav {
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
       background-color: #111;
-      border-top: 1px solid #222;
+      padding: 15px 10px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
       border-bottom: 1px solid #222;
-      padding: 12px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
 
     nav a {
       color: #f1f1f1;
       text-decoration: none;
-      margin: 0 15px;
       font-weight: 600;
-      transition: color 0.3s;
+      transition: color 0.3s, transform 0.2s;
     }
 
     nav a:hover {
       color: #d4af37;
+      transform: scale(1.1);
     }
 
+    /* ======== MAIN CONTENT ======== */
     main {
       max-width: 900px;
-      margin: 50px auto;
+      margin: 60px auto;
       padding: 0 20px;
-      background-color: #121212;
-      border-radius: 10px;
-      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
     }
 
     section {
-      margin-bottom: 40px;
+      background-color: #121212;
       padding: 30px;
-      border-bottom: 1px solid #333;
+      margin-bottom: 40px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(255,215,0,0.05);
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 1s ease, transform 0.8s ease;
     }
 
-    section:last-child {
-      border-bottom: none;
+    section.visible {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     h2 {
       color: #d4af37;
       font-size: 28px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
+      border-left: 4px solid #d4af37;
+      padding-left: 10px;
     }
 
     p {
@@ -85,44 +115,66 @@
     ul {
       list-style: none;
       padding-left: 0;
-      color: #f1f1f1;
     }
 
     li::before {
-      content: "✔ ";
+      content: "★ ";
       color: #d4af37;
     }
 
     a.source {
       color: #d4af37;
       text-decoration: none;
+      transition: 0.3s;
     }
 
     a.source:hover {
       text-decoration: underline;
+      color: #ffcc00;
     }
 
+    /* ======== FOOTER ======== */
     footer {
       text-align: center;
-      padding: 20px;
+      padding: 25px;
       background-color: #111;
       color: #999;
       border-top: 1px solid #222;
+      font-size: 14px;
     }
 
-    .highlight {
-      color: #d4af37;
+    /* ======== BACK TO TOP ======== */
+    #toTop {
+      position: fixed;
+      bottom: 30px;
+      right: 25px;
+      background-color: #d4af37;
+      color: #000;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 50%;
+      cursor: pointer;
       font-weight: bold;
+      font-size: 18px;
+      box-shadow: 0 0 10px #d4af37;
+      transition: transform 0.3s;
+      display: none;
+      z-index: 1000;
+    }
+
+    #toTop:hover {
+      transform: scale(1.15);
+    }
+
+    /* ======== ANIMATIONS ======== */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     @media (max-width: 700px) {
-      header h1 {
-        font-size: 42px;
-      }
-      main {
-        margin: 20px;
-        padding: 10px;
-      }
+      header h1 { font-size: 42px; }
+      nav { flex-wrap: wrap; gap: 10px; }
     }
   </style>
 </head>
@@ -133,7 +185,7 @@
   </header>
 
   <nav>
-    <a href="#instruksi">Instruksi Tugas</a>
+    <a href="#instruksi">Instruksi</a>
     <a href="#DOS">DOS</a>
     <a href="#Windows">Windows</a>
     <a href="#Mac">Mac</a>
@@ -142,66 +194,79 @@
   </nav>
 
   <main>
-    <!-- Instruksi -->
     <section id="instruksi">
       <h2>Instruksi Tugas</h2>
-      <p>Silakan Anda tuliskan artikel ke dalam blog pribadi <span class="highlight">ANDA</span> untuk sejarah:</p>
+      <p>Silakan tuliskan artikel pada blog pribadi <b>ANDA</b> untuk sejarah sistem operasi berikut:</p>
       <ul>
-        <li>SISTEM OPERASI DOS</li>
-        <li>SISTEM OPERASI Windows</li>
-        <li>SISTEM OPERASI MAC</li>
-        <li>SISTEM OPERASI Linux</li>
-        <li>SISTEM OPERASI Android</li>
+        <li>DOS</li>
+        <li>Windows</li>
+        <li>Mac</li>
+        <li>Linux</li>
+        <li>Android</li>
       </ul>
-      <p>Silakan Anda masukkan artikel tugas tersebut ke dalam blog pribadi Anda (nama blog adalah nama Anda).</p>
-      <p>Selanjutnya Anda kirimkan alamat URL artikel tersebut ke e-learning UNAMA 1 minggu dari pemberitahuan tugas.</p>
-      <p><span class="highlight">JANGAN LUPA</span> cantumkan sumber referensi yang Anda ambil.</p>
+      <p>Masukkan artikel tersebut ke dalam blog pribadi Anda (nama blog adalah nama Anda) lalu kirimkan URL artikel ke e-learning UNAMA dalam waktu 1 minggu.</p>
+      <p><b>Catatan:</b> Cantumkan sumber referensi yang digunakan.</p>
     </section>
 
-    <!-- Artikel DOS -->
     <section id="DOS">
       <h2>Sistem Operasi DOS</h2>
-      <p>DOS (Disk Operating System) adalah sistem operasi berbasis teks yang digunakan pada komputer IBM-PC pada awal tahun 1980-an. 
-      Microsoft mengembangkan versi terkenalnya yaitu <b>MS-DOS</b>, yang menjadi dasar bagi sistem operasi Windows generasi awal.</p>
-      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/MS-DOS" class="source" target="_blank">Wikipedia - MS-DOS</a></p>
+      <p>DOS (Disk Operating System) adalah sistem operasi berbasis teks yang populer di era 1980-an. Microsoft mengembangkan versi terkenalnya yaitu <b>MS-DOS</b>, yang menjadi dasar Windows generasi awal.</p>
+      <p><b>Sumber:</b> <a class="source" href="https://id.wikipedia.org/wiki/MS-DOS" target="_blank">Wikipedia - MS-DOS</a></p>
     </section>
 
-    <!-- Artikel Windows -->
     <section id="Windows">
       <h2>Sistem Operasi Windows</h2>
-      <p>Windows dikembangkan oleh Microsoft sebagai antarmuka grafis di atas DOS. 
-      Dirilis pertama kali pada tahun 1985, Windows berevolusi menjadi sistem operasi modern seperti Windows 10 dan 11 yang digunakan di seluruh dunia.</p>
-      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/Microsoft_Windows" class="source" target="_blank">Wikipedia - Windows</a></p>
+      <p>Windows dikembangkan oleh Microsoft dengan antarmuka grafis. Dirilis tahun 1985 dan terus berkembang hingga Windows 11 yang sangat populer di seluruh dunia.</p>
+      <p><b>Sumber:</b> <a class="source" href="https://id.wikipedia.org/wiki/Microsoft_Windows" target="_blank">Wikipedia - Windows</a></p>
     </section>
 
-    <!-- Artikel Mac -->
     <section id="Mac">
       <h2>Sistem Operasi Mac</h2>
-      <p>Mac OS adalah sistem operasi buatan Apple untuk komputer Macintosh, diperkenalkan pada tahun 1984. 
-      Kini dikenal sebagai <b>macOS</b>, sistem ini terkenal karena desain elegan, performa stabil, dan integrasi kuat dengan perangkat Apple lainnya.</p>
-      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/MacOS" class="source" target="_blank">Wikipedia - macOS</a></p>
+      <p>Mac OS atau kini disebut macOS adalah sistem operasi buatan Apple sejak 1984. Terkenal karena tampilannya yang elegan dan kestabilannya di perangkat Mac.</p>
+      <p><b>Sumber:</b> <a class="source" href="https://id.wikipedia.org/wiki/MacOS" target="_blank">Wikipedia - macOS</a></p>
     </section>
 
-    <!-- Artikel Linux -->
     <section id="Linux">
       <h2>Sistem Operasi Linux</h2>
-      <p>Linux adalah sistem operasi open-source berbasis kernel Linux yang dibuat oleh Linus Torvalds pada tahun 1991. 
-      Banyak digunakan untuk server, komputer pribadi, dan perangkat mobile.</p>
-      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/Linux" class="source" target="_blank">Wikipedia - Linux</a></p>
+      <p>Linux adalah sistem operasi open-source berbasis kernel Linux. Diciptakan oleh Linus Torvalds tahun 1991 dan kini digunakan di berbagai server dan perangkat pintar.</p>
+      <p><b>Sumber:</b> <a class="source" href="https://id.wikipedia.org/wiki/Linux" target="_blank">Wikipedia - Linux</a></p>
     </section>
 
-    <!-- Artikel Android -->
     <section id="Android">
       <h2>Sistem Operasi Android</h2>
-      <p>Android dikembangkan oleh Google sebagai sistem operasi berbasis Linux untuk perangkat mobile. 
-      Dirilis pertama kali pada tahun 2008, Android kini mendominasi pasar smartphone dunia.</p>
-      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/Android_(sistem_operasi)" class="source" target="_blank">Wikipedia - Android</a></p>
+      <p>Android dikembangkan oleh Google sebagai sistem operasi berbasis Linux untuk smartphone. Diluncurkan tahun 2008 dan kini mendominasi pasar global.</p>
+      <p><b>Sumber:</b> <a class="source" href="https://id.wikipedia.org/wiki/Android_(sistem_operasi)" target="_blank">Wikipedia - Android</a></p>
     </section>
   </main>
 
   <footer>
-    &copy; 2025 Blog Tristan | Universitas Dinamika Bangsa <br>
-    Tugas: Sejarah Sistem Operasi
+    &copy; 2025 Blog Tristan | Universitas Dinamika Bangsa
   </footer>
+
+  <button id="toTop">↑</button>
+
+  <script>
+    // Tombol back to top
+    const toTop = document.getElementById("toTop");
+    window.onscroll = function() {
+      if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+        toTop.style.display = "block";
+      } else {
+        toTop.style.display = "none";
+      }
+    };
+    toTop.onclick = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    // Animasi muncul saat di-scroll
+    const sections = document.querySelectorAll("section");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+        }
+      });
+    }, { threshold: 0.2 });
+    sections.forEach(sec => observer.observe(sec));
+  </script>
 </body>
 </html>
