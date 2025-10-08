@@ -1,101 +1,207 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gambar untuk Mas Itan</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .loader {
-            border: 8px solid #f3f3f3;
-            border-radius: 50%;
-            border-top: 8px solid #3498db;
-            width: 60px;
-            height: 60px;
-            animation: spin 2s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog Tristan - Sejarah Sistem Operasi</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #0d0d0d;
+      color: #f1f1f1;
+      line-height: 1.6;
+    }
+
+    header {
+      text-align: center;
+      background: linear-gradient(180deg, #1a1a1a, #0d0d0d);
+      padding: 80px 20px 60px;
+      border-bottom: 2px solid #d4af37;
+    }
+
+    header h1 {
+      font-size: 60px;
+      color: #d4af37;
+      margin-bottom: 10px;
+      letter-spacing: 3px;
+    }
+
+    header p {
+      font-size: 18px;
+      color: #ccc;
+    }
+
+    nav {
+      text-align: center;
+      background-color: #111;
+      border-top: 1px solid #222;
+      border-bottom: 1px solid #222;
+      padding: 12px 0;
+    }
+
+    nav a {
+      color: #f1f1f1;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: 600;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #d4af37;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 50px auto;
+      padding: 0 20px;
+      background-color: #121212;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+    }
+
+    section {
+      margin-bottom: 40px;
+      padding: 30px;
+      border-bottom: 1px solid #333;
+    }
+
+    section:last-child {
+      border-bottom: none;
+    }
+
+    h2 {
+      color: #d4af37;
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    p {
+      color: #ddd;
+      text-align: justify;
+    }
+
+    ul {
+      list-style: none;
+      padding-left: 0;
+      color: #f1f1f1;
+    }
+
+    li::before {
+      content: "✔ ";
+      color: #d4af37;
+    }
+
+    a.source {
+      color: #d4af37;
+      text-decoration: none;
+    }
+
+    a.source:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #111;
+      color: #999;
+      border-top: 1px solid #222;
+    }
+
+    .highlight {
+      color: #d4af37;
+      font-weight: bold;
+    }
+
+    @media (max-width: 700px) {
+      header h1 {
+        font-size: 42px;
+      }
+      main {
+        margin: 20px;
+        padding: 10px;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-    <div class="bg-white rounded-lg shadow-xl p-8 max-w-lg w-full text-center">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Kejutan untuk Mas Itan!</h1>
-        <p class="text-gray-600 mb-6">Gambar sedang dibuat, mohon tunggu sebentar...</p>
-        
-        <div id="image-container" class="w-full h-96 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
-            <div id="loader" class="loader"></div>
-            <img id="generated-image" src="" alt="Gambar yang dihasilkan" class="hidden w-full h-full object-cover">
-        </div>
-        <p id="error-message" class="text-red-500 mt-4 hidden"></p>
-    </div>
+<body>
+  <header>
+    <h1>TRISTAN</h1>
+    <p>Blog Pribadi | Sejarah Sistem Operasi</p>
+  </header>
 
-    <script>
-        async function generateImage() {
-            const prompt = "Seorang pria tampan Indonesia bernama Amba, tersenyum hangat sambil memegang sebuah kotak kado yang indah. Di kotak itu tertulis dengan jelas 'Love You Mas Itan'. Style-nya fotorealistik dan ceria.";
-            const loader = document.getElementById('loader');
-            const imageElement = document.getElementById('generated-image');
-            const imageContainer = document.getElementById('image-container');
-            const errorMessage = document.getElementById('error-message');
+  <nav>
+    <a href="#instruksi">Instruksi Tugas</a>
+    <a href="#DOS">DOS</a>
+    <a href="#Windows">Windows</a>
+    <a href="#Mac">Mac</a>
+    <a href="#Linux">Linux</a>
+    <a href="#Android">Android</a>
+  </nav>
 
-            loader.classList.remove('hidden');
-            imageElement.classList.add('hidden');
-            errorMessage.classList.add('hidden');
+  <main>
+    <!-- Instruksi -->
+    <section id="instruksi">
+      <h2>Instruksi Tugas</h2>
+      <p>Silakan Anda tuliskan artikel ke dalam blog pribadi <span class="highlight">ANDA</span> untuk sejarah:</p>
+      <ul>
+        <li>SISTEM OPERASI DOS</li>
+        <li>SISTEM OPERASI Windows</li>
+        <li>SISTEM OPERASI MAC</li>
+        <li>SISTEM OPERASI Linux</li>
+        <li>SISTEM OPERASI Android</li>
+      </ul>
+      <p>Silakan Anda masukkan artikel tugas tersebut ke dalam blog pribadi Anda (nama blog adalah nama Anda).</p>
+      <p>Selanjutnya Anda kirimkan alamat URL artikel tersebut ke e-learning UNAMA 1 minggu dari pemberitahuan tugas.</p>
+      <p><span class="highlight">JANGAN LUPA</span> cantumkan sumber referensi yang Anda ambil.</p>
+    </section>
 
-            try {
-                const apiKey = ""; // API key will be injected here
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/imagen-3.0-generate-002:predict?key=${apiKey}`;
-                
-                let response;
-                let result;
-                let retries = 3;
-                let delay = 1000;
+    <!-- Artikel DOS -->
+    <section id="DOS">
+      <h2>Sistem Operasi DOS</h2>
+      <p>DOS (Disk Operating System) adalah sistem operasi berbasis teks yang digunakan pada komputer IBM-PC pada awal tahun 1980-an. 
+      Microsoft mengembangkan versi terkenalnya yaitu <b>MS-DOS</b>, yang menjadi dasar bagi sistem operasi Windows generasi awal.</p>
+      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/MS-DOS" class="source" target="_blank">Wikipedia - MS-DOS</a></p>
+    </section>
 
-                for (let i = 0; i < retries; i++) {
-                    response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            instances: [{ prompt: prompt }],
-                            parameters: { "sampleCount": 1 }
-                        })
-                    });
+    <!-- Artikel Windows -->
+    <section id="Windows">
+      <h2>Sistem Operasi Windows</h2>
+      <p>Windows dikembangkan oleh Microsoft sebagai antarmuka grafis di atas DOS. 
+      Dirilis pertama kali pada tahun 1985, Windows berevolusi menjadi sistem operasi modern seperti Windows 10 dan 11 yang digunakan di seluruh dunia.</p>
+      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/Microsoft_Windows" class="source" target="_blank">Wikipedia - Windows</a></p>
+    </section>
 
-                    if (response.ok) {
-                        result = await response.json();
-                        break;
-                    } else {
-                        console.warn(`Attempt ${i + 1} failed with status ${response.status}. Retrying in ${delay / 1000}s...`);
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay *= 2; 
-                    }
-                }
+    <!-- Artikel Mac -->
+    <section id="Mac">
+      <h2>Sistem Operasi Mac</h2>
+      <p>Mac OS adalah sistem operasi buatan Apple untuk komputer Macintosh, diperkenalkan pada tahun 1984. 
+      Kini dikenal sebagai <b>macOS</b>, sistem ini terkenal karena desain elegan, performa stabil, dan integrasi kuat dengan perangkat Apple lainnya.</p>
+      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/MacOS" class="source" target="_blank">Wikipedia - macOS</a></p>
+    </section>
 
+    <!-- Artikel Linux -->
+    <section id="Linux">
+      <h2>Sistem Operasi Linux</h2>
+      <p>Linux adalah sistem operasi open-source berbasis kernel Linux yang dibuat oleh Linus Torvalds pada tahun 1991. 
+      Banyak digunakan untuk server, komputer pribadi, dan perangkat mobile.</p>
+      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/Linux" class="source" target="_blank">Wikipedia - Linux</a></p>
+    </section>
 
-                if (result && result.predictions && result.predictions.length > 0 && result.predictions[0].bytesBase64Encoded) {
-                    const imageUrl = `data:image/png;base64,${result.predictions[0].bytesBase64Encoded}`;
-                    imageElement.src = imageUrl;
-                    loader.classList.add('hidden');
-                    imageContainer.classList.remove('bg-gray-200');
-                    imageElement.classList.remove('hidden');
-                } else {
-                    throw new Error("Gagal membuat gambar atau respons tidak valid.");
-                }
-            } catch (error) {
-                console.error('Error generating image:', error);
-                loader.classList.add('hidden');
-                errorMessage.textContent = 'Maaf, terjadi kesalahan saat membuat gambar. Silakan coba lagi.';
-                errorMessage.classList.remove('hidden');
-            }
-        }
+    <!-- Artikel Android -->
+    <section id="Android">
+      <h2>Sistem Operasi Android</h2>
+      <p>Android dikembangkan oleh Google sebagai sistem operasi berbasis Linux untuk perangkat mobile. 
+      Dirilis pertama kali pada tahun 2008, Android kini mendominasi pasar smartphone dunia.</p>
+      <p><b>Sumber:</b> <a href="https://id.wikipedia.org/wiki/Android_(sistem_operasi)" class="source" target="_blank">Wikipedia - Android</a></p>
+    </section>
+  </main>
 
-        window.onload = generateImage;
-    </script>
+  <footer>
+    &copy; 2025 Blog Tristan | Universitas Dinamika Bangsa <br>
+    Tugas: Sejarah Sistem Operasi
+  </footer>
 </body>
 </html>
