@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tristan — Blog ARSIKOM (3D HTML)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+/* Minor extra styles to mimic iPhone-site smooth look */
+body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+.phone-screen { width: 260px; height: 520px; border-radius: 32px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
+.glass { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)); backdrop-filter: blur(6px); }
+/* modal */
+.modal-backdrop { background: rgba(0,0,0,0.6); }
+</style>
+</head>
+<body class="bg-gradient-to-b from-slate-900 to-slate-800 text-slate-100 min-h-screen">
+<header class="max-w-6xl mx-auto px-6 py-8 flex items-center justify-between">
+<div>
+<h1 class="text-3xl font-extrabold">Tristan — History of Computer</h1>
+<p class="text-sm opacity-80 mt-1">Tugas Arsitektur & Organisasi Komputer — Versi HTML 3D sederhana</p>
+</div>
+<nav class="flex gap-4 items-center">
+<a class="text-sm opacity-80 hover:opacity-100 cursor-pointer">Home</a>
+<a class="text-sm opacity-80 hover:opacity-100 cursor-pointer">Generasi</a>
+<a class="text-sm opacity-80 hover:opacity-100 cursor-pointer">Perbandingan</a>
+</nav>
+</header>
+
+
+<main class="max-w-6xl mx-auto px-6 pb-20 grid md:grid-cols-2 gap-8 items-center">
+<section>
+<h2 class="text-4xl font-bold leading-tight">Sejarah Komputer — Dari Tabung Vakum Hingga Kecerdasan Buatan</h2>
+<p class="mt-4 text-slate-300">Ringkasan interaktif yang bisa Anda jelajahi melalui model 3D telepon di sebelah kanan. Klik tombol "Lihat Ringkasan" pada layar telepon untuk membuka detail generasi.</p>
+
+
+<div class="mt-6 flex gap-3">
+<button id="scrollGen" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20">Lihat Generasi</button>
+<button onclick="document.getElementById('comparison').scrollIntoView({behavior:'smooth'})" class="px-4 py-2 rounded-xl border border-white/10">Perbandingan</button>
+</div>
+
+
+<div id="generations-list" class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
+<article class="p-4 rounded-xl bg-gradient-to-br from-slate-800/40 to-slate-900/30 border border-white/5">
+<div class="text-sm opacity-80">Generasi 1</div>
+<h4 class="font-semibold mt-1">Tabung Vakum (1940-an)</h4>
+<p class="text-slate-300 text-sm mt-2">Komputer awal yang menggunakan tabung vakum. Besar, panas, dan sulit dirawat.</p>
+</article>
+<article class="p-4 rounded-xl bg-gradient-to-br from-slate-800/40 to-slate-900/30 border border-white/5">
+<div class="text-sm opacity-80">Generasi 2</div>
+<h4 class="font-semibold mt-1">Transistor (1950-an)</h4>
+<p class="text-slate-300 text-sm mt-2">Transistor menggantikan tabung—lebih kecil dan andal.</p>
+</article>
+<article class="p-4 rounded-xl bg-gradient-to-br from-slate-800/40 to-slate-900/30 border border-white/5">
+<div class="text-sm opacity-80">Generasi 3</div>
+<h4 class="font-semibold mt-1">Sirkuit Terpadu (1960-an)</h4>
+<p class="text-slate-300 text-sm mt-2">IC memungkinkan kompak dan performa lebih tinggi.</p>
+</article>
+<article class="p-4 rounded-xl bg-gradient-to-br from-slate-800/40 to-slate-900/30 border border-white/5">
+<div class="text-sm opacity-80">Generasi 4</div>
+<h4 class="font-semibold mt-1">Mikroprosesor & PC (1970-an)</h4>
+<p class="text-slate-300 text-sm mt-2">Komputer menjadi terjangkau bagi individu.</p>
+</article>
+</div>
+</section>
+
+
+<!-- 3D Canvas area + phone overlay -->
+<section class="flex justify-center items-center">
+<div class="relative">
+<div id="canvas-wrap" class="w-[380px] h-[560px] rounded-xl overflow-hidden bg-gradient-to-tr from-slate-700/20 to-slate-900/10 p-4">
+<canvas id="three-canvas" class="w-full h-full block"></canvas>
+<!-- HTML overlay styled like a phone screen -->
+<div id="phone-overlay" class="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 phone-screen glass flex flex-col p-4 text-white">
+<div>
+<h3 class="text-lg font-semibold">Tristan's ARSIKOM</h3>
+<p class="text-xs opacity-80 mt-2">Klik tombol di bawah untuk melihat ringkasan generasi.</p>
+</div>
+<div class="flex-1"></div>
+<button id="openSummary" class="w-full py-2 rounded-lg text-sm bg-white/10 hover:bg-white/20">Lihat Ringkasan</button>
+<div class="text-[10px] opacity-60 mt-4">Interaktif 3D — klik & tarik untuk rotasi</div>
+</div>
+</div>
+<div class="mt-4 text-center text-xs opacity-60">Telusuri model 3D di atas — gunakan mouse untuk memutar/zoom</div>
+</div>
+</section>
+
+
+<!-- Hidden modal with full generation details -->
+<div id="modal" class="fixed inset-0 hidden items-center justify-center z-50">
+<div class="absolute inset-0 modal-backdrop" onclick="closeModal()"></div>
+<div class="relative z-60 max-w-3xl w-full p-6 rounded-2xl bg-slate-900 border border-white/6">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="text-xl font-semibold">Ringkasan Generasi</h4>
+<p class="text-sm opacity-80">Penjelasan singkat tiap generasi komputer.</p>
+</html>
