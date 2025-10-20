@@ -7,6 +7,7 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
 /* Minor extra styles to mimic iPhone-site smooth look */
+html { scroll-behavior: smooth; }
 body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 .phone-screen { width: 260px; height: 520px; border-radius: 32px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.6); }
 .glass { background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.15)); backdrop-filter: blur(6px); }
@@ -21,9 +22,9 @@ body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 <p class="text-sm opacity-80 mt-1">Tugas Arsitektur & Organisasi Komputer — Versi HTML 3D sederhana</p>
 </div>
 <nav class="flex gap-4 items-center">
-<a class="text-sm opacity-80 hover:opacity-100 cursor-pointer">Home</a>
-<a class="text-sm opacity-80 hover:opacity-100 cursor-pointer">Generasi</a>
-<a class="text-sm opacity-80 hover:opacity-100 cursor-pointer">Perbandingan</a>
+<a class="text-sm opacity-80 hover:opacity-100 cursor-pointer" href="#">Home</a>
+<a class="text-sm opacity-80 hover:opacity-100 cursor-pointer" href="#generations">Generasi</a>
+<a id="nav-comparison" class="text-sm opacity-80 hover:opacity-100 cursor-pointer" href="#comparison">Perbandingan</a>
 </nav>
 </header>
 
@@ -87,11 +88,4 @@ body { -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
 
 
 <!-- Hidden modal with full generation details -->
-<div id="modal" class="fixed inset-0 hidden items-center justify-center z-50">
-<div class="absolute inset-0 modal-backdrop" onclick="closeModal()"></div>
-<div class="relative z-60 max-w-3xl w-full p-6 rounded-2xl bg-slate-900 border border-white/6">
-<div class="flex justify-between items-start">
-<div>
-<h4 class="text-xl font-semibold">Ringkasan Generasi</h4>
-<p class="text-sm opacity-80">Penjelasan singkat tiap generasi komputer.</p>
 </html>
