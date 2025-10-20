@@ -1,252 +1,468 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tristan — Blog Interaktif</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #050505;
-      --accent: #00e6a8;
-      --muted: #9a9a9a;
-    }
-    body {
-      margin: 0;
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: white;
-      overflow-x: hidden;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 40px;
-    }
-    header h1 {
-      font-family: 'Playfair Display', serif;
-      color: var(--accent);
-      margin: 0;
-    }
-    .sidebar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 260px;
-      height: 100vh;
-      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
-      border-right: 1px solid rgba(255,255,255,0.05);
-      backdrop-filter: blur(6px);
-      padding: 40px 20px;
-    }
-    .menu-item {
-      margin: 14px 0;
-      padding: 10px 14px;
-      border-radius: 8px;
-      color: var(--muted);
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .menu-item:hover {
-      background: rgba(255,255,255,0.05);
-      color: var(--accent);
-    }
-    .hero {
-      margin-left: 280px;
-      height: 600px;
-      position: relative;
-      overflow: hidden;
-    }
-    #glCanvas {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-    .overlay {
-      position: absolute;
-      bottom: 30px;
-      left: 50px;
-    }
-    .overlay h2 {
-      margin: 0;
-      font-family: 'Playfair Display', serif;
-      font-size: 28px;
-    }
-    .overlay p {
-      color: var(--muted);
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas ARSIKOM Tristan - Evolusi 3D Komputer</title>
+    <!-- Memuat Tailwind CSS untuk Styling Cepat dan Responsif -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Memuat Three.js untuk Grafis 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@400;600;800&display=swap');
+        
+        /* CSS Utama */
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow: hidden; /* Penting agar 3D canvas bisa menjadi background */
+            background-color: #0d1117;
+            color: #e6e6e6;
+        }
 
-    /* PANEL SLIDE KANAN */
-    .panel {
-      position: fixed;
-      top: 0;
-      right: -600px;
-      width: 600px;
-      height: 100vh;
-      background: #0b0b0b;
-      box-shadow: -6px 0 30px rgba(0,0,0,0.6);
-      border-left: 1px solid rgba(255,255,255,0.05);
-      padding: 40px;
-      transition: right 0.5s ease;
-      overflow-y: auto;
-      z-index: 99;
-    }
-    .panel.active {
-      right: 0;
-    }
-    .panel h2 {
-      font-family: 'Playfair Display', serif;
-      color: var(--accent);
-      margin-top: 0;
-    }
-    .panel p {
-      color: var(--muted);
-      line-height: 1.6;
-    }
-    .close-btn {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      background: transparent;
-      border: none;
-      color: var(--muted);
-      font-size: 20px;
-      cursor: pointer;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 12px;
-    }
-    th, td {
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 8px;
-      color: var(--muted);
-      text-align: left;
-    }
-    th {
-      color: #fff;
-      background: rgba(255,255,255,0.05);
-    }
-  </style>
+        /* Canvas Three.js sebagai Background */
+        #container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1; /* Di bawah konten utama */
+        }
+
+        /* Overlay Konten Utama */
+        #content {
+            position: relative;
+            z-index: 10; /* Di atas 3D background */
+            min-height: 100vh;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1, h2 {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+        }
+
+        .generation-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            backdrop-filter: blur(5px);
+            background-color: rgba(17, 24, 39, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+            perspective: 1000px;
+        }
+
+        .generation-card:hover {
+            transform: translateY(-10px) scale(1.05) rotateX(2deg) rotateY(2deg);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.8);
+        }
+        
+        /* Gaya untuk Modal/Pop-up Detail */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            overflow-y: auto;
+            backdrop-filter: blur(8px);
+        }
+
+        .modal-content {
+            background-color: #1a2230;
+            margin: 5% auto;
+            padding: 30px;
+            border: 2px solid #00ffff;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 1000px;
+            box-shadow: 0 0 40px rgba(0, 255, 255, 0.5);
+        }
+
+        .close-btn {
+            color: #00ffff;
+            float: right;
+            font-size: 30px;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+
+        .close-btn:hover,
+        .close-btn:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Responsif untuk Mobile */
+        @media (max-width: 768px) {
+            #timeline-grid {
+                grid-template-columns: 1fr;
+            }
+            .modal-content {
+                margin: 10% auto;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>Tristan</h1>
-    <div>Blog Interaktif 3D</div>
-  </header>
+    <!-- Three.js Canvas Container (Background Interaktif 3D) -->
+    <div id="container"></div>
 
-  <aside class="sidebar">
-    <div class="menu-item" onclick="openPanel('history')">📜 History of Computer</div>
-    <div class="menu-item" onclick="openPanel('compare')">⚙️ Perbandingan Generasi</div>
-    <div class="menu-item" onclick="openPanel('conclusion')">💡 Kesimpulan</div>
-  </aside>
+    <!-- Konten Tugas Utama -->
+    <div id="content">
+        <header class="text-center mb-12 mt-4">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-[#00ffff] mb-2 tracking-wider">
+                EVOLUSI DIGITAL
+            </h1>
+            <h2 class="text-3xl md:text-4xl font-light text-gray-300">
+                Garis Waktu Komputer Generasi ke Generasi
+            </h2>
+            <p class="mt-4 text-lg text-green-400">
+                **Tugas 1 Individu ARSIKOM** | Disusun oleh: **Tristan**
+            </p>
+        </header>
 
-  <section class="hero">
-    <canvas id="glCanvas"></canvas>
-    <div class="overlay">
-      <h2>Selamat Datang di Blog Tristan</h2>
-      <p>Klik menu di sebelah kiri untuk melihat penjelasan interaktif.</p>
+        <section id="timeline-grid" class="grid grid-cols-1 md:grid-cols-5 gap-6 max-w-6xl w-full">
+            <!-- Kartu Generasi 1 -->
+            <div id="g1-card" class="generation-card p-6 rounded-xl text-center" onclick="showDetails(1)">
+                <span class="text-5xl font-bold text-red-500 block mb-2">G1</span>
+                <p class="text-xl font-semibold">Generasi Pertama</p>
+                <p class="text-sm text-gray-400">(1940 - 1959)</p>
+            </div>
+            <!-- Kartu Generasi 2 -->
+            <div id="g2-card" class="generation-card p-6 rounded-xl text-center" onclick="showDetails(2)">
+                <span class="text-5xl font-bold text-yellow-500 block mb-2">G2</span>
+                <p class="text-xl font-semibold">Generasi Kedua</p>
+                <p class="text-sm text-gray-400">(1959 - 1965)</p>
+            </div>
+            <!-- Kartu Generasi 3 -->
+            <div id="g3-card" class="generation-card p-6 rounded-xl text-center" onclick="showDetails(3)">
+                <span class="text-5xl font-bold text-green-500 block mb-2">G3</span>
+                <p class="text-xl font-semibold">Generasi Ketiga</p>
+                <p class="text-sm text-gray-400">(1965 - 1971)</p>
+            </div>
+            <!-- Kartu Generasi 4 -->
+            <div id="g4-card" class="generation-card p-6 rounded-xl text-center" onclick="showDetails(4)">
+                <span class="text-5xl font-bold text-blue-500 block mb-2">G4</span>
+                <p class="text-xl font-semibold">Generasi Keempat</p>
+                <p class="text-sm text-gray-400">(1971 - 1980)</p>
+            </div>
+            <!-- Kartu Generasi 5 -->
+            <div id="g5-card" class="generation-card p-6 rounded-xl text-center" onclick="showDetails(5)">
+                <span class="text-5xl font-bold text-purple-500 block mb-2">G5</span>
+                <p class="text-xl font-semibold">Generasi Kelima</p>
+                <p class="text-sm text-gray-400">(1980 - Sekarang)</p>
+            </div>
+        </section>
+
+        <p class="mt-8 text-center text-gray-400 text-sm italic">
+            *Klik pada setiap kartu generasi untuk melihat detail sejarah dan perbandingan.
+        </p>
     </div>
-  </section>
 
-  <!-- PANEL PENJELASAN -->
-  <div class="panel" id="panel">
-    <button class="close-btn" onclick="closePanel()">✕</button>
-    <div id="panel-content"></div>
-  </div>
+    <!-- Modal Detail Konten (Pop-up) -->
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h3 id="modalTitle" class="text-4xl font-bold mb-4 text-[#00ffff] font-['Orbitron']"></h3>
+            <div id="modalContent" class="text-gray-300 space-y-6">
+                <!-- Konten Detail Generasi akan dimasukkan di sini oleh JS -->
+            </div>
+        </div>
+    </div>
 
-  <!-- SCRIPT PENJELASAN -->
-  <script>
-    const panel = document.getElementById('panel');
-    const panelContent = document.getElementById('panel-content');
+    <script>
+        // Data Sejarah dan Perbandingan Komputer
+        const generations = {
+            1: {
+                title: "Generasi Pertama (G1): Tabung Hampa Udara (Vacuum Tube)",
+                years: "1940 - 1959",
+                detail: `
+                    <h4 class="text-2xl font-semibold text-red-400 border-b border-red-500 pb-2">Sejarah Detail</h4>
+                    <p>Komputer generasi pertama ditandai dengan penggunaan **Tabung Hampa Udara (Vacuum Tube)** sebagai komponen sirkuit utama. Tabung ini berukuran besar, rapuh, dan menghasilkan panas yang sangat tinggi, sehingga membutuhkan pendingin (AC) ekstra. Komputer di era ini sangat mahal, lambat, dan hanya dapat diprogram menggunakan **Bahasa Mesin (Machine Language)**, bahasa tingkat terendah yang sulit.</p>
+                    <p class="mt-3"><strong>Contoh:</strong> ENIAC, EDVAC, UNIVAC I. (ENIAC, yang dibuat tahun 1946, berbobot 30 ton dan menempati satu ruangan besar.)</p>
+                    <h4 class="text-xl font-semibold mt-6 text-red-400">Arsitektur Utama:</h4>
+                    <ul class="list-disc pl-5">
+                        <li>**Komponen:** Tabung Hampa Udara (Vacuum Tube).</li>
+                        <li>**Memori:** Silinder Magnetik (Magnetic Drum/Core Storage).</li>
+                        <li>**Input/Output:** Pita kertas berlubang (*Punched Card*).</li>
+                        <li>**Kecepatan:** Sangat lambat (milidetik).</li>
+                    </ul>
+                `,
+                color: "text-red-500"
+            },
+            2: {
+                title: "Generasi Kedua (G2): Transistor",
+                years: "1959 - 1965",
+                detail: `
+                    <h4 class="text-2xl font-semibold text-yellow-400 border-b border-yellow-500 pb-2">Sejarah Detail</h4>
+                    <p>Penemuan **Transistor** pada tahun 1947 merevolusi komputer. Transistor jauh lebih kecil, lebih cepat, lebih andal, dan lebih hemat energi dibandingkan tabung hampa udara. Ini membuat ukuran fisik komputer menyusut secara signifikan, meskipun masih tergolong besar. Di generasi ini, bahasa pemrograman tingkat tinggi seperti **FORTRAN dan COBOL** mulai digunakan, membuat pemrograman lebih mudah.</p>
+                    <p class="mt-3"><strong>Contoh:</strong> IBM 7070, PDP-1, UNIVAC III.</p>
+                    <h4 class="text-xl font-semibold mt-6 text-yellow-400">Arsitektur Utama:</h4>
+                    <ul class="list-disc pl-5">
+                        <li>**Komponen:** Transistor.</li>
+                        <li>**Memori:** Magnetic Core Storage.</li>
+                        <li>**Bahasa:** Assembly Language, FORTRAN, COBOL.</li>
+                        <li>**Kecepatan:** Lebih cepat (mikrodetik).</li>
+                    </ul>
+                `,
+                color: "text-yellow-500"
+            },
+            3: {
+                title: "Generasi Ketiga (G3): Integrated Circuit (IC)",
+                years: "1965 - 1971",
+                detail: `
+                    <h4 class="text-2xl font-semibold text-green-400 border-b border-green-500 pb-2">Sejarah Detail</h4>
+                    <p>Penggunaan **Integrated Circuit (IC) atau Chip** menjadi penanda utama. IC menggabungkan banyak transistor dalam satu keping silikon kecil, mengurangi ukuran dan biaya komputer secara drastis. Komputer menjadi lebih kecil, lebih cepat, dan lebih terjangkau, memungkinkan komersialisasi ke khalayak umum. Generasi ini juga memperkenalkan **Sistem Operasi (OS)** yang memungkinkan komputer menjalankan beberapa program secara bersamaan (*Multiprogramming*).</p>
+                    <p class="mt-3"><strong>Contoh:</strong> IBM 360 Series, PDP-8, UNIVAC 9000.</p>
+                    <h4 class="text-xl font-semibold mt-6 text-green-400">Arsitektur Utama:</h4>
+                    <ul class="list-disc pl-5">
+                        <li>**Komponen:** Integrated Circuit (IC) / Solid State Technology.</li>
+                        <li>**Memori:** Peningkatan kapasitas dan kecepatan.</li>
+                        <li>**Fitur:** Pengenalan Sistem Operasi, monitor, keyboard, dan printer.</li>
+                        <li>**Kecepatan:** Sangat cepat (nanodetik).</li>
+                    </ul>
+                `,
+                color: "text-green-500"
+            },
+            4: {
+                title: "Generasi Keempat (G4): Mikroprosesor",
+                years: "1971 - 1980 (Awal PC)",
+                detail: `
+                    <h4 class="text-2xl font-semibold text-blue-400 border-b border-blue-500 pb-2">Sejarah Detail</h4>
+                    <p>Ciri khas utama adalah penggunaan **Very Large Scale Integration (VLSI)** yang memampatkan ribuan sirkuit ke dalam satu chip tunggal: **Mikroprosesor**. Mikroprosesor ini menjadi otak utama komputer, memungkinkan lahirnya **Personal Computer (PC)** pertama. Ukuran komputer menyusut drastis, menjadi perangkat meja. Era ini juga ditandai dengan pengembangan jaringan, Ethernet, dan GUI (Graphical User Interface) awal.</p>
+                    <p class="mt-3"><strong>Contoh:</strong> IBM PC, Apple II, Komputer Mikro berbasis chip Intel 4004 (mikroprosesor pertama).</p>
+                    <h4 class="text-xl font-semibold mt-6 text-blue-400">Arsitektur Utama:</h4>
+                    <ul class="list-disc pl-5">
+                        <li>**Komponen:** Mikroprosesor (VLSI - Very Large Scale Integration).</li>
+                        <li>**Pengembangan:** Lahirnya PC, jaringan (LAN/WAN), dan mouse.</li>
+                        <li>**Memori:** Chip semikonduktor berkecepatan tinggi.</li>
+                        <li>**Kecepatan:** Jauh lebih cepat (ratusan juta instruksi per detik).</li>
+                    </ul>
+                `,
+                color: "text-blue-500"
+            },
+            5: {
+                title: "Generasi Kelima (G5): Kecerdasan Buatan (AI)",
+                years: "1980 - Sekarang (dan Masa Depan)",
+                detail: `
+                    <h4 class="text-2xl font-semibold text-purple-400 border-b border-purple-500 pb-2">Sejarah Detail</h4>
+                    <p>Generasi ini difokuskan pada pengembangan arsitektur komputer yang dapat mendukung **Kecerdasan Buatan (AI)**, pemrosesan paralel, dan komputasi ultra-skala besar (ULSI/SLSI). Meskipun proyek AI awal Jepang tidak sepenuhnya berhasil, generasi ini ditandai dengan kemajuan luar biasa dalam arsitektur paralel, komputasi terdistribusi, dan teknologi komputasi yang terus menyusut (laptop, tablet, *smartphone*).</p>
+                    <p class="mt-3"><strong>Contoh:</strong> Komputer modern (Desktop, Laptop, Smartphone), Superkomputer, Komputer Kuantum (dalam pengembangan).</p>
+                    <h4 class="text-xl font-semibold mt-6 text-purple-400">Arsitektur Utama:</h4>
+                    <ul class="list-disc pl-5">
+                        <li>**Komponen:** ULSI/SLSI, Prosesor Paralel, Arsitektur Vektor.</li>
+                        <li>**Fokus:** AI (Machine Learning, Natural Language Processing), Komputasi Kuantum, Jaringan Global (Internet).</li>
+                        <li>**Aplikasi:** Multimedia, Jaringan Global (World Wide Web), Perangkat Portabel.</li>
+                        <li>**Kecepatan:** Sangat cepat (Giga- hingga Terraflops).</li>
+                    </ul>
+                `,
+                color: "text-purple-500"
+            }
+        };
 
-    function openPanel(type) {
-      let content = '';
-      if (type === 'history') {
-        content = `
-          <h2>History of Computer</h2>
-          <p><b>Generasi 1 (1940–1956):</b> Menggunakan tabung vakum, sangat besar, dan boros energi.</p>
-          <p><b>Generasi 2 (1956–1963):</b> Transistor menggantikan tabung vakum, membuat komputer lebih kecil dan cepat.</p>
-          <p><b>Generasi 3 (1964–1971):</b> Integrated Circuit (IC) mempercepat proses dan menurunkan biaya.</p>
-          <p><b>Generasi 4 (1971–1980-an):</b> Mikroprosesor melahirkan PC pribadi seperti Apple II dan IBM PC.</p>
-          <p><b>Generasi 5 (1980-an–sekarang):</b> Berbasis AI dan teknologi nano, komputer mampu berpikir dan belajar.</p>
-        `;
-      } else if (type === 'compare') {
-        content = `
-          <h2>Perbandingan Generasi Komputer</h2>
-          <table>
-            <tr><th>Aspek</th><th>Generasi 1</th><th>Generasi 2</th><th>Generasi 3</th><th>Generasi 4</th><th>Generasi 5</th></tr>
-            <tr><td>Komponen</td><td>Tabung Vakum</td><td>Transistor</td><td>IC</td><td>Mikroprosesor</td><td>AI & VLSI</td></tr>
-            <tr><td>Ukuran</td><td>Sangat besar</td><td>Lebih kecil</td><td>Mini</td><td>Kompak</td><td>Super kecil</td></tr>
-            <tr><td>Kecepatan</td><td>Lambat</td><td>Lebih cepat</td><td>Nanodetik</td><td>GHz</td><td>Real-time</td></tr>
-            <tr><td>Bahasa</td><td>Mesin</td><td>Assembly</td><td>Tingkat tinggi</td><td>OOP</td><td>AI / Machine Learning</td></tr>
-          </table>
-          <p>Setiap generasi membawa inovasi: lebih kecil, lebih cepat, dan lebih efisien. Kini komputer tidak hanya menghitung, tetapi juga belajar dan berinteraksi.</p>
-        `;
-      } else if (type === 'conclusion') {
-        content = `
-          <h2>Kesimpulan</h2>
-          <p>Perjalanan komputer dari generasi pertama hingga kelima menunjukkan evolusi besar dalam ukuran, kecepatan, dan kecerdasan. 
-          Dari ruangan besar dengan tabung vakum hingga komputer mini berbasis AI yang dapat memahami bahasa manusia.
-          Inovasi terus berlanjut menuju era komputasi kuantum dan kecerdasan buatan yang lebih maju.</p>
-        `;
-      }
-      panelContent.innerHTML = content;
-      panel.classList.add('active');
-    }
+        // Fungsi untuk menampilkan detail di modal
+        function showDetails(generation) {
+            const data = generations[generation];
+            document.getElementById('modalTitle').textContent = "Detail " + data.title;
+            document.getElementById('modalTitle').className = `text-4xl font-bold mb-4 ${data.color} font-['Orbitron']`;
 
-    function closePanel() {
-      panel.classList.remove('active');
-    }
+            // Membuat konten modal (Detail + Tabel Perbandingan)
+            let contentHTML = data.detail;
+            contentHTML += generateComparisonTable();
+            
+            document.getElementById('modalContent').innerHTML = contentHTML;
+            document.getElementById('detailModal').style.display = 'block';
+        }
 
-    // Tutup panel jika klik di luar
-    window.addEventListener('click', (e) => {
-      if (panel.classList.contains('active') && !panel.contains(e.target) && !e.target.classList.contains('menu-item')) {
-        closePanel();
-      }
-    });
-  </script>
+        // Fungsi untuk menutup modal
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+        }
 
-  <!-- 3D Background -->
-  <script type="module">
-    import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
-    import { OrbitControls } from 'https://unpkg.com/three@0.158.0/examples/jsm/controls/OrbitControls.js';
+        // Menutup modal jika user klik di luar modal
+        window.onclick = function(event) {
+            const modal = document.getElementById('detailModal');
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+        
+        // Fungsi untuk membuat Tabel Perbandingan Lengkap (Permintaan Tugas)
+        function generateComparisonTable() {
+            return `
+                <h4 class="text-3xl font-bold mt-10 mb-4 text-[#00ffff] font-['Orbitron'] border-t pt-4">Tabel Perbandingan Antar Generasi</h4>
+                <div class="overflow-x-auto relative shadow-md sm:rounded-lg">
+                    <table class="w-full text-sm text-left text-gray-400">
+                        <thead class="text-xs uppercase bg-[#00ffff] text-gray-900 border-b border-gray-600">
+                            <tr>
+                                <th scope="col" class="py-3 px-6">Fitur</th>
+                                <th scope="col" class="py-3 px-6">G1 (1940-1959)</th>
+                                <th scope="col" class="py-3 px-6">G2 (1959-1965)</th>
+                                <th scope="col" class="py-3 px-6">G3 (1965-1971)</th>
+                                <th scope="col" class="py-3 px-6">G4 (1971-1980)</th>
+                                <th scope="col" class="py-3 px-6">G5 (1980-Sekarang)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="bg-[#1a2230] border-b border-gray-700 hover:bg-[#2c384d]">
+                                <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Komponen Utama</th>
+                                <td class="py-4 px-6 text-red-400">Tabung Hampa Udara</td>
+                                <td class="py-4 px-6 text-yellow-400">Transistor</td>
+                                <td class="py-4 px-6 text-green-400">Integrated Circuit (IC)</td>
+                                <td class="py-4 px-6 text-blue-400">Mikroprosesor (VLSI)</td>
+                                <td class="py-4 px-6 text-purple-400">ULSI & AI (Paralel)</td>
+                            </tr>
+                            <tr class="bg-[#1a2230] border-b border-gray-700 hover:bg-[#2c384d]">
+                                <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Ukuran</th>
+                                <td class="py-4 px-6">Sangat Besar (Satu Ruangan)</td>
+                                <td class="py-4 px-6">Besar (Lemari)</td>
+                                <td class="py-4 px-6">Sedang (Meja/Kabinet)</td>
+                                <td class="py-4 px-6">Kecil (PC, Desktop)</td>
+                                <td class="py-4 px-6">Sangat Kecil (Laptop, Mobile)</td>
+                            </tr>
+                            <tr class="bg-[#1a2230] border-b border-gray-700 hover:bg-[#2c384d]">
+                                <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Kecepatan</th>
+                                <td class="py-4 px-6">Milidetik</td>
+                                <td class="py-4 px-6">Mikrodetik</td>
+                                <td class="py-4 px-6">Nanodetik</td>
+                                <td class="py-4 px-6">Picodetik</td>
+                                <td class="py-4 px-6">Mendekati Waktu Nyata (Tera-Hz)</td>
+                            </tr>
+                            <tr class="bg-[#1a2230] border-b border-gray-700 hover:bg-[#2c384d]">
+                                <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Panas & Daya</th>
+                                <td class="py-4 px-6">Sangat Tinggi, Daya Sangat Besar</td>
+                                <td class="py-4 px-6">Tinggi, Daya Besar</td>
+                                <td class="py-4 px-6">Rendah, Daya Hemat</td>
+                                <td class="py-4 px-6">Sangat Rendah, Daya Sangat Hemat</td>
+                                <td class="py-4 px-6">Minimal, Efisien Energi</td>
+                            </tr>
+                            <tr class="bg-[#1a2230] border-b border-gray-700 hover:bg-[#2c384d]">
+                                <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Bahasa Pemrograman</th>
+                                <td class="py-4 px-6">Bahasa Mesin</td>
+                                <td class="py-4 px-6">Assembly, FORTRAN, COBOL</td>
+                                <td class="py-4 px-6">Bahasa Tingkat Tinggi (PASCAL, BASIC)</td>
+                                <td class="py-4 px-6">C, C++, Database, OS</td>
+                                <td class="py-4 px-6">Sistem Berbasis Pengetahuan, LISP, PROLOG</td>
+                            </tr>
+                            <tr class="bg-[#1a2230] border-b border-gray-700 hover:bg-[#2c384d]">
+                                <th scope="row" class="py-4 px-6 font-medium text-white whitespace-nowrap">Fokus Aplikasi</th>
+                                <td class="py-4 px-6">Ilmiah/Militer</td>
+                                <td class="py-4 px-6">Bisnis & Sains (Awal Komersial)</td>
+                                <td class="py-4 px-6">Penggunaan Massal (Sistem Operasi)</td>
+                                <td class="py-4 px-6">Personal Computer (PC)</td>
+                                <td class="py-4 px-6">Kecerdasan Buatan (AI) & Mobile</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
 
-    const canvas = document.getElementById('glCanvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth - 280, window.innerHeight * 0.9);
 
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(45, (window.innerWidth - 280) / (window.innerHeight * 0.9), 0.1, 100);
-    camera.position.set(0, 0, 6);
+        // --- THREE.JS SETUP (Background Interaktif 3D) ---
+        let scene, camera, renderer, particles, particleCount, geometry, material, mouseX = 0, mouseY = 0;
 
-    const hemi = new THREE.HemisphereLight(0xffffff, 0x222222, 0.9);
-    scene.add(hemi);
-    const dir = new THREE.DirectionalLight(0xffffff, 0.6);
-    dir.position.set(5, 10, 7);
-    scene.add(dir);
+        function initThreeJS() {
+            // Scene
+            scene = new THREE.Scene();
+            
+            // Camera (Perspektif)
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 10000);
+            camera.position.z = 1000;
+            
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.getElementById('container').appendChild(renderer.domElement);
 
-    const geo = new THREE.TorusKnotGeometry(1, 0.3, 120, 20);
-    const mat = new THREE.MeshStandardMaterial({ color: 0x0af0b0, metalness: 0.7, roughness: 0.2, emissive: 0x001a10, emissiveIntensity: 0.8 });
-    const mesh = new THREE.Mesh(geo, mat);
-    scene.add(mesh);
+            // Partikel (Background Interaktif)
+            particleCount = 1000;
+            geometry = new THREE.BufferGeometry();
+            const positions = [];
+            const colors = [];
+            const color = new THREE.Color();
+            
+            // Membuat Partikel dengan Posisi Acak dan Warna Cyan/Biru
+            for (let i = 0; i < particleCount; i++) {
+                // Posisi Acak
+                positions.push((Math.random() - 0.5) * 2000, (Math.random() - 0.5) * 2000, (Math.random() - 0.5) * 2000);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
+                // Warna (Cyan/Biru)
+                color.setHSL(0.5 + Math.random() * 0.1, 0.7, 0.5); 
+                colors.push(color.r, color.g, color.b);
+            }
 
-    function animate() {
-      requestAnimationFrame(animate);
-      mesh.rotation.y += 0.005;
-      mesh.rotation.x += 0.002;
-      controls.update();
-      renderer.render(scene, camera);
-    }
-    animate();
-  </script>
+            geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+            material = new THREE.PointsMaterial({
+                size: 3,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.7
+            });
+
+            particles = new THREE.Points(geometry, material);
+            scene.add(particles);
+
+            // Event Listener untuk Gerakan Mouse (Interaktivitas)
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            window.addEventListener('resize', onWindowResize, false);
+        }
+
+        function onDocumentMouseMove(event) {
+            // Mengubah posisi mouse ke skala -100 hingga 100
+            mouseX = (event.clientX - window.innerWidth / 2) * 0.1;
+            mouseY = (event.clientY - window.innerHeight / 2) * 0.1;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Animasi Partikel dan Kamera
+            camera.position.x += (mouseX - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY - camera.position.y) * 0.05;
+            camera.lookAt(scene.position);
+
+            const positions = particles.geometry.attributes.position.array;
+            
+            // Pergerakan partikel untuk efek "Cyber Network" yang mengalir
+            for (let i = 0; i < particleCount * 3; i += 3) {
+                // Gerakkan partikel secara perlahan ke depan (sumbu Z)
+                positions[i + 2] += 0.5; 
+                // Jika partikel terlalu jauh, kembalikan ke belakang untuk efek loop
+                if (positions[i + 2] > 1000) {
+                    positions[i + 2] = -1000;
+                }
+            }
+            particles.geometry.attributes.position.needsUpdate = true; // Perbarui posisi di GPU
+
+            renderer.render(scene, camera);
+        }
+
+        // Jalankan Inisialisasi setelah window dimuat
+        window.onload = function() {
+            initThreeJS();
+            animate();
+        };
+
+    </script>
 
 </body>
 </html>
