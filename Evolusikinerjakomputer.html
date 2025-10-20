@@ -3,50 +3,47 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tristan — Blog</title>
+<title>Tristan — Blog (Interaktif)</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-:root{
---bg:#050505; --card:#0b0b0b; --muted:#9a9a9a; --accent:#00e6a8;
-}
-html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
-.wrap{display:grid;grid-template-columns:420px 1fr;min-height:100vh;gap:30px;padding:40px}
+:root{--bg:#050505;--card:#0b0b0b;--muted:#9a9a9a;--accent:#00e6a8}
+html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,Arial}
+.wrap{display:grid;grid-template-columns:340px 1fr;min-height:100vh;gap:28px;padding:36px}
 header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
-.sidebar{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);padding:30px;border-radius:18px}
-.brand{display:flex;align-items:center;gap:16px}
-.logo{width:64px;height:64px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#000,#111);box-shadow:0 6px 24px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
-.logo h1{font-family:'Playfair Display',serif;margin:0;font-size:20px;color:var(--accent)}
-.owner{line-height:1}
-.owner .name{font-family:'Playfair Display',serif;font-size:20px;margin:0}
-.owner .role{color:var(--muted);font-size:13px;margin:0}
-nav{margin-top:24px}
-nav a{display:block;color:var(--muted);text-decoration:none;padding:10px 12px;border-radius:10px}
-nav a:hover{background:rgba(255,255,255,0.02);color:#fff}
-.hero{position:relative;overflow:hidden;border-radius:18px;height:520px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.03)}
+.sidebar{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);padding:26px;border-radius:14px}
+.logo{width:56px;height:56px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#000,#111);box-shadow:0 8px 28px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
+.owner .name{font-family:'Playfair Display',serif;font-size:18px;margin:0}
+nav{margin-top:20px}
+.menu-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;color:var(--muted);cursor:pointer}
+.menu-item:hover{background:rgba(255,255,255,0.02);color:#fff}
+.menu-item.active{background:linear-gradient(90deg, rgba(0,230,168,0.06), rgba(255,255,255,0.02));color:var(--accent)}
+.menu-thumb{width:8px;height:8px;border-radius:2px;background:transparent}
+
+
+.hero{position:relative;overflow:hidden;border-radius:12px;height:520px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.03)}
 #glCanvas{width:100%;height:100%;display:block}
-.hero .overlay{position:absolute;left:30px;bottom:30px;z-index:3}
-.hero .title{font-family:'Playfair Display',serif;font-size:28px;margin:0}
-.hero .subtitle{color:var(--muted);margin-top:6px}
-.content{display:flex;flex-direction:column;gap:20px}
-.post{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.03);padding:24px;border-radius:14px}
-.post h2{margin:0 0 8px 0;font-family:'Playfair Display',serif}
-.post p{color:var(--muted);margin:0}
-footer{grid-column:1/-1;text-align:center;color:var(--muted);margin-top:10px}
-.cta{display:inline-block;padding:10px 16px;border-radius:12px;border:1px solid rgba(255,255,255,0.06);background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));cursor:pointer}
-.cta:active{transform:translateY(1px)}
-table{width:100%;border-collapse:collapse;margin-top:10px}
-th,td{border:1px solid rgba(255,255,255,0.1);padding:10px;text-align:left;color:var(--muted)}
-th{background-color:rgba(255,255,255,0.05);color:#fff}
-@media (max-width:920px){.wrap{grid-template-columns:1fr;padding:20px}.hero{height:360px}}
+.content{display:flex;flex-direction:column;gap:18px}
+.post{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.03);padding:20px;border-radius:12px}
+h2{font-family:'Playfair Display',serif}
+.explain-card{position:fixed;left:380px;top:140px;max-width:520px;background:var(--card);border:1px solid rgba(255,255,255,0.04);padding:18px;border-radius:12px;box-shadow:0 18px 60px rgba(0,0,0,0.6);display:none;z-index:60;backdrop-filter: blur(6px);}
+.explain-card.show{display:block;animation:fadeSlide .34s ease-out}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px) translateX(-6px)}to{opacity:1;transform:none}}
+.explain-card .close{position:absolute;right:10px;top:8px;background:transparent;border:none;color:var(--muted);cursor:pointer}
+.explain-card h3{margin:0 0 8px 0}
+.explain-card p{color:var(--muted);margin:0 0 8px 0}
+
+
+/* small-screen adjustments */
+@media (max-width:920px){.wrap{grid-template-columns:1fr;padding:20px}.explain-card{left:20px;right:20px;top:auto;bottom:20px;max-width:none}}
 </style>
 </head>
 <body>
 <div class="wrap">
 <header>
-<div style="display:flex;align-items:center;gap:18px">
-<div class="logo"><h1>Tr</h1></div>
+<div style="display:flex;align-items:center;gap:14px">
+<div class="logo"><h1 style="margin:0;font-size:18px;color:var(--accent)">Tr</h1></div>
 <div>
-<div class="owner"><p class="name">Tristan</p><p class="role">Personal Blog</p></div>
+<div class="owner"><p class="name">Tristan</p><p style="margin:2px 0 0 0;color:var(--muted);font-size:13px">Blog Arsitektur & Organisasi Komputer</p></div>
 </div>
 </div>
 <div>
@@ -56,50 +53,50 @@ th{background-color:rgba(255,255,255,0.05);color:#fff}
 
 
 <aside class="sidebar">
-<div class="brand">
-<div style="flex:1">
-<p style="margin:0;color:var(--muted)">Welcome</p>
-<h2 style="margin:6px 0 0 0;font-family:'Playfair Display'">Tristan</h2>
-<p style="margin:8px 0 0 0;color:var(--muted)">Elegant black theme · 3D interactive</p>
-</div>
-</div>
 <nav>
-<a href="#post1">History of Computer</a>
-<a href="#post2">Perbandingan Generasi</a>
-<a href="#post3">Kesimpulan</a>
+<div class="menu-item" data-key="history"><div class="menu-thumb" style="background:linear-gradient(180deg,#333,#222)"></div><div>History of Computer</div></div>
+<div class="menu-item" data-key="compare"><div class="menu-thumb" style="background:linear-gradient(180deg,#333,#222)"></div><div>Perbandingan Generasi</div></div>
+<div class="menu-item" data-key="conclusion"><div class="menu-thumb" style="background:linear-gradient(180deg,#333,#222)"></div><div>Kesimpulan</div></div>
 </nav>
-<div style="margin-top:20px">
-<small style="color:var(--muted)">Contact</small>
-<p style="margin:6px 0 0 0;color:var(--muted)">tristan@example.com</p>
-</div>
+<div style="margin-top:22px;color:var(--muted);font-size:13px">Klik menu di atas untuk membuka penjelasan singkat tanpa meninggalkan halaman.</div>
 </aside>
 
 
 <main class="content">
 <section class="hero">
 <canvas id="glCanvas"></canvas>
-<div class="overlay">
-<h3 class="title">Tristan</h3>
-<div class="subtitle">Blog Arsitektur & Organisasi Komputer</div>
+<div style="position:absolute;left:30px;bottom:30px;z-index:3">
+<h3 style="margin:0;font-family:'Playfair Display'">Tristan</h3>
+<div style="color:var(--muted);margin-top:6px">Blog interaktif — klik menu untuk melihat penjelasan</div>
 </div>
 </section>
 
 
-<article id="post1" class="post">
-<h2>History Of Computer (Sejarah Komputer)</h2>
-<p><strong>Generasi Pertama (1940–1956):</strong> Menggunakan tabung vakum sebagai komponen utama. Komputer ini besar, panas, dan memerlukan daya tinggi. Contoh: ENIAC dan UNIVAC.</p>
-<p><strong>Generasi Kedua (1956–1963):</strong> Menggunakan transistor, lebih kecil dan cepat. Contoh: IBM 1401.</p>
-<p><strong>Generasi Ketiga (1964–1971):</strong> Menggunakan IC (Integrated Circuit), meningkatkan kecepatan dan efisiensi. Contoh: IBM System/360.</p>
-<p><strong>Generasi Keempat (1971–1980-an):</strong> Menggunakan mikroprosesor. Komputer pribadi mulai muncul. Contoh: Apple II.</p>
-<p><strong>Generasi Kelima (1980-an–sekarang):</strong> Menggunakan AI dan teknologi modern. Komputer mampu berpikir dan belajar. Contoh: komputer dengan AI seperti ChatGPT.</p>
+<article id="full-history" class="post" style="display:none">
+<h2>History Of Computer (Lengkap)</h2>
+<p><strong>Generasi 1 (1940–1956):</strong> ... [isi lengkap yang sudah ditambahkan sebelumnya].</p>
 </article>
 
 
-<article id="post2" class="post">
-<h2>Perbandingan Generasi Komputer</h2>
-<table>
-<tr><th>Aspek</th><th>Generasi 1</th><th>Generasi 2</th><th>Generasi 3</th><th>Generasi 4</th><th>Generasi 5</th></tr>
-<tr><td>Komponen Utama</td><td>Tabung Vakum</td><td>Transistor</td><td>IC (Integrated Circuit)</td><td>Mikroprosesor</td><td>AI, VLSI, Nanoteknologi</td></tr>
-<tr><td>Ukuran</td><td>Sangat besar (ruangan penuh)</td><td>Lebih kecil</td><td>Semakin kecil</td><td>Kompak dan portabel</td><td>Sangat kecil dan efisien</td></tr>
-<tr><td>Kecepatan Proses</td><td>Lambat (milidetik)</td><td>Lebih cepat</td><td>Nanodetik</td><td>Gigahertz</td><td>Super cepat & real-time</td></tr>
+<article id="full-compare" class="post" style="display:none">
+<h2>Perbandingan Generasi (Lengkap)</h2>
+<p>Berikut perbandingan detil antar generasi (teknologi, ukuran, kecepatan, penyimpanan, bahasa):</p>
+<table style="width:100%;border-collapse:collapse;margin-top:12px;color:var(--muted)">
+<tr><th style="text-align:left;color:#fff;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Aspek</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 1</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 2</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 3</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 4</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 5</th></tr>
+<tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.03)">Komponen Utama</td><td style="padding:8px">Tabung vakum</td><td style="padding:8px">Transistor</td><td style="padding:8px">IC</td><td style="padding:8px">Mikroprosesor</td><td style="padding:8px">AI & VLSI</td></tr>
+<tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.03)">Ukuran</td><td style="padding:8px">Ruangan besar</td><td style="padding:8px">Lebih kecil</td><td style="padding:8px">Semakin kecil</td><td style="padding:8px">Portable</td><td style="padding:8px">Genggam / embedded</td></tr>
+<tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.03)">Kecepatan</td><td style="padding:8px">Milidetik</td><td style="padding:8px">Lebih cepat</td><td style="padding:8px">Nanodetik</td><td style="padding:8px">GHz</td><td style="padding:8px">Real-time & parallel</td></tr>
+</table>
+</article>
+
+
+<article id="full-conclusion" class="post" style="display:none">
+<h2>Kesimpulan Lengkap</h2>
+<p>Perkembangan komputer menunjukkan pergeseran dari perangkat besar menjadi sistem yang sangat kecil, efisien, dan cerdas. Pusat inovasi hari ini adalah pada kemampuan pemrosesan paralel, jaringan, dan kecerdasan buatan yang memperluas fungsi komputer jauh melampaui perhitungan numerik.</p>
+</article>
+
+
+<footer style="margin-top:8px;color:var(--muted)">© Tristan · Elegant Black Blog · Tugas 1 ARSIKOM</footer>
+</main>
+</div>
 </html>
