@@ -1,102 +1,252 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Tristan — Blog (Interaktif)</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#050505;--card:#0b0b0b;--muted:#9a9a9a;--accent:#00e6a8}
-html,body{height:100%;margin:0;background:var(--bg);color:#fff;font-family:Inter,system-ui,Arial}
-.wrap{display:grid;grid-template-columns:340px 1fr;min-height:100vh;gap:28px;padding:36px}
-header{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between}
-.sidebar{background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(6px);padding:26px;border-radius:14px}
-.logo{width:56px;height:56px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,#000,#111);box-shadow:0 8px 28px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03)}
-.owner .name{font-family:'Playfair Display',serif;font-size:18px;margin:0}
-nav{margin-top:20px}
-.menu-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:8px;color:var(--muted);cursor:pointer}
-.menu-item:hover{background:rgba(255,255,255,0.02);color:#fff}
-.menu-item.active{background:linear-gradient(90deg, rgba(0,230,168,0.06), rgba(255,255,255,0.02));color:var(--accent)}
-.menu-thumb{width:8px;height:8px;border-radius:2px;background:transparent}
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tristan — Blog Interaktif</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #050505;
+      --accent: #00e6a8;
+      --muted: #9a9a9a;
+    }
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: white;
+      overflow-x: hidden;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+    }
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--accent);
+      margin: 0;
+    }
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 260px;
+      height: 100vh;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border-right: 1px solid rgba(255,255,255,0.05);
+      backdrop-filter: blur(6px);
+      padding: 40px 20px;
+    }
+    .menu-item {
+      margin: 14px 0;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: var(--muted);
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .menu-item:hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--accent);
+    }
+    .hero {
+      margin-left: 280px;
+      height: 600px;
+      position: relative;
+      overflow: hidden;
+    }
+    #glCanvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .overlay {
+      position: absolute;
+      bottom: 30px;
+      left: 50px;
+    }
+    .overlay h2 {
+      margin: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: 28px;
+    }
+    .overlay p {
+      color: var(--muted);
+    }
 
-
-.hero{position:relative;overflow:hidden;border-radius:12px;height:520px;background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent);border:1px solid rgba(255,255,255,0.03)}
-#glCanvas{width:100%;height:100%;display:block}
-.content{display:flex;flex-direction:column;gap:18px}
-.post{background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));border:1px solid rgba(255,255,255,0.03);padding:20px;border-radius:12px}
-h2{font-family:'Playfair Display',serif}
-.explain-card{position:fixed;left:380px;top:140px;max-width:520px;background:var(--card);border:1px solid rgba(255,255,255,0.04);padding:18px;border-radius:12px;box-shadow:0 18px 60px rgba(0,0,0,0.6);display:none;z-index:60;backdrop-filter: blur(6px);}
-.explain-card.show{display:block;animation:fadeSlide .34s ease-out}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(8px) translateX(-6px)}to{opacity:1;transform:none}}
-.explain-card .close{position:absolute;right:10px;top:8px;background:transparent;border:none;color:var(--muted);cursor:pointer}
-.explain-card h3{margin:0 0 8px 0}
-.explain-card p{color:var(--muted);margin:0 0 8px 0}
-
-
-/* small-screen adjustments */
-@media (max-width:920px){.wrap{grid-template-columns:1fr;padding:20px}.explain-card{left:20px;right:20px;top:auto;bottom:20px;max-width:none}}
-</style>
+    /* PANEL SLIDE KANAN */
+    .panel {
+      position: fixed;
+      top: 0;
+      right: -600px;
+      width: 600px;
+      height: 100vh;
+      background: #0b0b0b;
+      box-shadow: -6px 0 30px rgba(0,0,0,0.6);
+      border-left: 1px solid rgba(255,255,255,0.05);
+      padding: 40px;
+      transition: right 0.5s ease;
+      overflow-y: auto;
+      z-index: 99;
+    }
+    .panel.active {
+      right: 0;
+    }
+    .panel h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--accent);
+      margin-top: 0;
+    }
+    .panel p {
+      color: var(--muted);
+      line-height: 1.6;
+    }
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 20px;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+    }
+    th, td {
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 8px;
+      color: var(--muted);
+      text-align: left;
+    }
+    th {
+      color: #fff;
+      background: rgba(255,255,255,0.05);
+    }
+  </style>
 </head>
 <body>
-<div class="wrap">
-<header>
-<div style="display:flex;align-items:center;gap:14px">
-<div class="logo"><h1 style="margin:0;font-size:18px;color:var(--accent)">Tr</h1></div>
-<div>
-<div class="owner"><p class="name">Tristan</p><p style="margin:2px 0 0 0;color:var(--muted);font-size:13px">Blog Arsitektur & Organisasi Komputer</p></div>
-</div>
-</div>
-<div>
-<button class="cta" id="toggleBtn">Toggle Motion</button>
-</div>
-</header>
 
+  <header>
+    <h1>Tristan</h1>
+    <div>Blog Interaktif 3D</div>
+  </header>
 
-<aside class="sidebar">
-<nav>
-<div class="menu-item" data-key="history"><div class="menu-thumb" style="background:linear-gradient(180deg,#333,#222)"></div><div>History of Computer</div></div>
-<div class="menu-item" data-key="compare"><div class="menu-thumb" style="background:linear-gradient(180deg,#333,#222)"></div><div>Perbandingan Generasi</div></div>
-<div class="menu-item" data-key="conclusion"><div class="menu-thumb" style="background:linear-gradient(180deg,#333,#222)"></div><div>Kesimpulan</div></div>
-</nav>
-<div style="margin-top:22px;color:var(--muted);font-size:13px">Klik menu di atas untuk membuka penjelasan singkat tanpa meninggalkan halaman.</div>
-</aside>
+  <aside class="sidebar">
+    <div class="menu-item" onclick="openPanel('history')">📜 History of Computer</div>
+    <div class="menu-item" onclick="openPanel('compare')">⚙️ Perbandingan Generasi</div>
+    <div class="menu-item" onclick="openPanel('conclusion')">💡 Kesimpulan</div>
+  </aside>
 
+  <section class="hero">
+    <canvas id="glCanvas"></canvas>
+    <div class="overlay">
+      <h2>Selamat Datang di Blog Tristan</h2>
+      <p>Klik menu di sebelah kiri untuk melihat penjelasan interaktif.</p>
+    </div>
+  </section>
 
-<main class="content">
-<section class="hero">
-<canvas id="glCanvas"></canvas>
-<div style="position:absolute;left:30px;bottom:30px;z-index:3">
-<h3 style="margin:0;font-family:'Playfair Display'">Tristan</h3>
-<div style="color:var(--muted);margin-top:6px">Blog interaktif — klik menu untuk melihat penjelasan</div>
-</div>
-</section>
+  <!-- PANEL PENJELASAN -->
+  <div class="panel" id="panel">
+    <button class="close-btn" onclick="closePanel()">✕</button>
+    <div id="panel-content"></div>
+  </div>
 
+  <!-- SCRIPT PENJELASAN -->
+  <script>
+    const panel = document.getElementById('panel');
+    const panelContent = document.getElementById('panel-content');
 
-<article id="full-history" class="post" style="display:none">
-<h2>History Of Computer (Lengkap)</h2>
-<p><strong>Generasi 1 (1940–1956):</strong> ... [isi lengkap yang sudah ditambahkan sebelumnya].</p>
-</article>
+    function openPanel(type) {
+      let content = '';
+      if (type === 'history') {
+        content = `
+          <h2>History of Computer</h2>
+          <p><b>Generasi 1 (1940–1956):</b> Menggunakan tabung vakum, sangat besar, dan boros energi.</p>
+          <p><b>Generasi 2 (1956–1963):</b> Transistor menggantikan tabung vakum, membuat komputer lebih kecil dan cepat.</p>
+          <p><b>Generasi 3 (1964–1971):</b> Integrated Circuit (IC) mempercepat proses dan menurunkan biaya.</p>
+          <p><b>Generasi 4 (1971–1980-an):</b> Mikroprosesor melahirkan PC pribadi seperti Apple II dan IBM PC.</p>
+          <p><b>Generasi 5 (1980-an–sekarang):</b> Berbasis AI dan teknologi nano, komputer mampu berpikir dan belajar.</p>
+        `;
+      } else if (type === 'compare') {
+        content = `
+          <h2>Perbandingan Generasi Komputer</h2>
+          <table>
+            <tr><th>Aspek</th><th>Generasi 1</th><th>Generasi 2</th><th>Generasi 3</th><th>Generasi 4</th><th>Generasi 5</th></tr>
+            <tr><td>Komponen</td><td>Tabung Vakum</td><td>Transistor</td><td>IC</td><td>Mikroprosesor</td><td>AI & VLSI</td></tr>
+            <tr><td>Ukuran</td><td>Sangat besar</td><td>Lebih kecil</td><td>Mini</td><td>Kompak</td><td>Super kecil</td></tr>
+            <tr><td>Kecepatan</td><td>Lambat</td><td>Lebih cepat</td><td>Nanodetik</td><td>GHz</td><td>Real-time</td></tr>
+            <tr><td>Bahasa</td><td>Mesin</td><td>Assembly</td><td>Tingkat tinggi</td><td>OOP</td><td>AI / Machine Learning</td></tr>
+          </table>
+          <p>Setiap generasi membawa inovasi: lebih kecil, lebih cepat, dan lebih efisien. Kini komputer tidak hanya menghitung, tetapi juga belajar dan berinteraksi.</p>
+        `;
+      } else if (type === 'conclusion') {
+        content = `
+          <h2>Kesimpulan</h2>
+          <p>Perjalanan komputer dari generasi pertama hingga kelima menunjukkan evolusi besar dalam ukuran, kecepatan, dan kecerdasan. 
+          Dari ruangan besar dengan tabung vakum hingga komputer mini berbasis AI yang dapat memahami bahasa manusia.
+          Inovasi terus berlanjut menuju era komputasi kuantum dan kecerdasan buatan yang lebih maju.</p>
+        `;
+      }
+      panelContent.innerHTML = content;
+      panel.classList.add('active');
+    }
 
+    function closePanel() {
+      panel.classList.remove('active');
+    }
 
-<article id="full-compare" class="post" style="display:none">
-<h2>Perbandingan Generasi (Lengkap)</h2>
-<p>Berikut perbandingan detil antar generasi (teknologi, ukuran, kecepatan, penyimpanan, bahasa):</p>
-<table style="width:100%;border-collapse:collapse;margin-top:12px;color:var(--muted)">
-<tr><th style="text-align:left;color:#fff;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Aspek</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 1</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 2</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 3</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 4</th><th style="text-align:left;padding:8px;border-bottom:1px solid rgba(255,255,255,0.06)">Generasi 5</th></tr>
-<tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.03)">Komponen Utama</td><td style="padding:8px">Tabung vakum</td><td style="padding:8px">Transistor</td><td style="padding:8px">IC</td><td style="padding:8px">Mikroprosesor</td><td style="padding:8px">AI & VLSI</td></tr>
-<tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.03)">Ukuran</td><td style="padding:8px">Ruangan besar</td><td style="padding:8px">Lebih kecil</td><td style="padding:8px">Semakin kecil</td><td style="padding:8px">Portable</td><td style="padding:8px">Genggam / embedded</td></tr>
-<tr><td style="padding:8px;border-top:1px solid rgba(255,255,255,0.03)">Kecepatan</td><td style="padding:8px">Milidetik</td><td style="padding:8px">Lebih cepat</td><td style="padding:8px">Nanodetik</td><td style="padding:8px">GHz</td><td style="padding:8px">Real-time & parallel</td></tr>
-</table>
-</article>
+    // Tutup panel jika klik di luar
+    window.addEventListener('click', (e) => {
+      if (panel.classList.contains('active') && !panel.contains(e.target) && !e.target.classList.contains('menu-item')) {
+        closePanel();
+      }
+    });
+  </script>
 
+  <!-- 3D Background -->
+  <script type="module">
+    import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
+    import { OrbitControls } from 'https://unpkg.com/three@0.158.0/examples/jsm/controls/OrbitControls.js';
 
-<article id="full-conclusion" class="post" style="display:none">
-<h2>Kesimpulan Lengkap</h2>
-<p>Perkembangan komputer menunjukkan pergeseran dari perangkat besar menjadi sistem yang sangat kecil, efisien, dan cerdas. Pusat inovasi hari ini adalah pada kemampuan pemrosesan paralel, jaringan, dan kecerdasan buatan yang memperluas fungsi komputer jauh melampaui perhitungan numerik.</p>
-</article>
+    const canvas = document.getElementById('glCanvas');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth - 280, window.innerHeight * 0.9);
 
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, (window.innerWidth - 280) / (window.innerHeight * 0.9), 0.1, 100);
+    camera.position.set(0, 0, 6);
 
-<footer style="margin-top:8px;color:var(--muted)">© Tristan · Elegant Black Blog · Tugas 1 ARSIKOM</footer>
-</main>
-</div>
+    const hemi = new THREE.HemisphereLight(0xffffff, 0x222222, 0.9);
+    scene.add(hemi);
+    const dir = new THREE.DirectionalLight(0xffffff, 0.6);
+    dir.position.set(5, 10, 7);
+    scene.add(dir);
+
+    const geo = new THREE.TorusKnotGeometry(1, 0.3, 120, 20);
+    const mat = new THREE.MeshStandardMaterial({ color: 0x0af0b0, metalness: 0.7, roughness: 0.2, emissive: 0x001a10, emissiveIntensity: 0.8 });
+    const mesh = new THREE.Mesh(geo, mat);
+    scene.add(mesh);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      mesh.rotation.y += 0.005;
+      mesh.rotation.x += 0.002;
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+  </script>
+
+</body>
 </html>
