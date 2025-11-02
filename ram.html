@@ -1,1 +1,459 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tugas Blog: Memori Akses Rawak (RAM) Dinamik 3D</title>
+    <!-- Muatkan Tailwind CSS CDN untuk penggayaan yang pantas dan responsif --><script src="https://cdn.tailwindcss.com"></script>
+    <!-- Muatkan Three.js CDN untuk visualisasi 3D --><script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        /* Tetapan asas untuk badan dan fon Inter (atau sans-serif) */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7fafc;
+            color: #1a202c;
+        }
+        /* Tetapan untuk kanvas 3D */
+        #ram-container {
+            width: 100%;
+            height: 400px; /* Ketinggian tetap untuk visualisasi 3D */
+            background-color: #1a202c;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden; /* Pastikan bintang tidak keluar dari bekas */
+        }
+        canvas {
+            display: block;
+        }
+        /* Gaya tambahan untuk interaktiviti */
+        .highlight {
+            transition: background-color 0.3s;
+        }
+        .highlight:hover {
+            background-color: #4c51bf;
+            color: white;
+        }
+        /* Kunci untuk animasi teks */
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+        #status-text {
+            animation: pulse 2s infinite ease-in-out;
+        }
+        /* Gaya untuk bahagian prose */
+        .prose h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-top: 1.5rem;
+            color: #4c51bf; /* Indigo untuk sub-tajuk */
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-6xl mx-auto">
+        <!-- HEADER BLOG --><header class="text-center py-8">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-indigo-700">
+                Memori Akses Rawak (RAM): Enjin Kelajuan Komputer Anda
+            </h1>
+            <p class="mt-2 text-lg text-gray-600">
+                Dinamik 3D: Putar dan Terokai
+            </p>
+        </header>
+
+        <!-- BAHAGIAN 3D DINAMIK --><section class="mb-12">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800 border-b-2 pb-2 border-indigo-200">
+                Visualisasi 3D RAM Interaktif
+            </h2>
+            <div id="ram-container">
+                <!-- Kanvas Three.js akan dimuatkan di sini --><div id="loading" class="absolute inset-0 flex items-center justify-center text-white text-xl">
+                    Memuatkan Model 3D...
+                </div>
+            </div>
+            <p id="status-text" class="mt-4 text-center text-indigo-600 font-semibold text-lg">
+                Status: Sedia. Klik & Seret untuk memutar RAM!
+            </p>
+        </section>
+
+        <!-- KANDUNGAN BLOG --><section class="prose max-w-none lg:prose-lg">
+            
+            <!-- 1. APA ITU RAM --><h2 class="text-3xl font-bold mb-4 text-gray-800 border-b-2 pb-2 border-indigo-200">
+                1. Apa Itu RAM dan Mengapa Ia Penting?
+            </h2>
+            <p>
+                **RAM (Random Access Memory)** ialah memori jangka pendek komputer anda. Ia adalah tempat di mana sistem operasi, program, dan data semasa yang sedang anda gunakan disimpan buat sementara waktu supaya CPU (Unit Pemprosesan Pusat) boleh mengaksesnya dengan cepat. RAM berbeza daripada storan kekal (seperti SSD atau HDD) kerana ia bersifat **volatil** — semua data di dalamnya akan hilang apabila komputer dimatikan.
+            </p>
+            <p>
+                Fikirkan RAM seperti meja kerja anda. Lebih besar meja kerja anda (lebih banyak RAM), lebih banyak buku, nota, dan alatan yang boleh anda buka pada satu masa tanpa perlu menyusun semula atau mencari di dalam kabinet fail (storan kekal). Ini bermakna multitasking yang lebih lancar dan masa pemuatan aplikasi yang lebih pantas.
+            </p>
+
+            <!-- 2. RAM DAN MOTHERBOARD --><h2 class="text-3xl font-bold mt-8 mb-4 text-gray-800 border-b-2 pb-2 border-indigo-200">
+                2. RAM dan Motherboard (Hubungan Fungsian)
+            </h2>
+            <p>
+                RAM disambungkan ke motherboard melalui slot yang dikenali sebagai **DIMM (Dual In-line Memory Module)** untuk komputer desktop, atau **SO-DIMM (Small Outline DIMM)** untuk komputer riba.
+            </p>
+            <h3>Mod Dwi-Saluran (Dual-Channel Mode)</h3>
+            <p>
+                Prestasi RAM anda sangat bergantung pada seni bina saluran (channel architecture) motherboard anda. Kebanyakan komputer moden menyokong mod dwi-saluran, yang membolehkan data diakses secara serentak dari dua batang RAM (dua modul DIMM), menggandakan lebar jalur memori.
+            </p>
+            <p>
+                Untuk mengaktifkan dwi-saluran, anda mesti memasang dua batang RAM yang sama (kapasiti, kelajuan, dan idealnya jenama yang sama) ke dalam slot yang ditentukan (biasanya slot 1 dan 3, atau slot 2 dan 4).
+            </p>
+
+            <!-- 3. FUNGSI DAN PERFORMA RAM --><h2 class="text-3xl font-bold mt-8 mb-4 text-gray-800 border-b-2 pb-2 border-indigo-200">
+                3. Fungsi dan Performa RAM
+            </h2>
+            <p>
+                Fungsi utama RAM adalah untuk menyediakan storan yang sangat cepat untuk data kerja CPU. Prestasi RAM diukur melalui dua metrik utama:
+            </p>
+            <ul class="list-disc ml-6 space-y-2">
+                <li class="p-2 rounded-lg highlight inline-block">
+                    **Kelajuan Jam (Clock Speed/Frequency):** Diukur dalam Megahertz (MHz) atau MegaTransfers per saat (MT/s). Nilai ini menunjukkan seberapa cepat RAM boleh memindahkan data ke CPU. Kelajuan yang lebih tinggi bermakna pemindahan data yang lebih pantas.
+                </li>
+                <li class="p-2 rounded-lg highlight inline-block">
+                    **Kelewatan (Latency/Timings):** Biasanya diwakili oleh set nombor (cth., 16-18-18-38), yang menunjukkan kelewatan (lag) dalam kitaran jam sebelum data boleh diakses. **Kelewatan CAS (CL)** adalah yang paling penting. Nilai CL yang lebih rendah adalah lebih baik.
+                </li>
+            </ul>
+
+            <!-- 4. JENIS-JENIS RAM --><h2 class="text-3xl font-bold mt-8 mb-4 text-gray-800 border-b-2 pb-2 border-indigo-200">
+                4. Jenis-Jenis RAM (DRAM, SRAM, DDR)
+            </h2>
+            
+            <h3>DRAM vs SRAM</h3>
+            <p>
+                Secara teknikal, terdapat dua jenis RAM utama:
+            </p>
+            <ul class="list-disc ml-6 space-y-2">
+                <li>
+                    **SRAM (Static RAM):** Lebih cepat dan mahal. Tidak memerlukan kuasa untuk disegarkan secara berterusan. Biasanya digunakan untuk cache CPU (L1, L2, L3) kerana kelajuannya yang kritikal.
+                </li>
+                <li>
+                    **DRAM (Dynamic RAM):** Lebih perlahan dan murah. Memerlukan kuasa untuk disegarkan beribu-ribu kali sesaat untuk mengekalkan data. Ini adalah jenis memori yang digunakan untuk modul RAM komputer (seperti DDR4 dan DDR5).
+                </li>
+            </ul>
+
+            <h3>Generasi DDR (Double Data Rate)</h3>
+            <p>
+                Generasi DDR terus berkembang untuk meningkatkan kelajuan dan kecekapan kuasa:
+            </p>
+            <ul class="list-disc ml-6 space-y-2">
+                <li class="p-2 rounded-lg highlight inline-block">
+                    **DDR4:** Standard yang lazim, kelajuan biasanya dari 2133 MT/s hingga 3200 MT/s.
+                </li>
+                <li class="p-2 rounded-lg highlight inline-block">
+                    **DDR5:** Generasi terbaru, menawarkan kelajuan permulaan 4800 MT/s dan kecekapan kuasa yang lebih baik.
+                </li>
+            </ul>
+
+            <!-- 5. SPESIFIKASI DAN PENAMAAN --><h2 class="text-3xl font-bold mt-8 mb-4 text-gray-800 border-b-2 pb-2 border-indigo-200">
+                5. Spesifikasi dan Penamaan DDR RAM
+            </h2>
+            <p>
+                Modul RAM mempunyai dua sistem penamaan yang digunakan secara bergantian:
+            </p>
+            
+            <h3>a. Penamaan Kelajuan Data (MT/s)</h3>
+            <p>
+                Ini adalah cara paling mudah untuk menentukan kelajuan. Nombor ini menunjukkan MegaTransfers per saat (MT/s). Contoh:
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>**DDR4-3200:** Mempunyai kelajuan 3200 MT/s.</li>
+                    <li>**DDR5-6000:** Mempunyai kelajuan 6000 MT/s.</li>
+                </ul>
+            </p>
+
+            <h3>b. Penamaan Lebar Jalur (PC Naming)</h3>
+            <p>
+                Penamaan ini menunjukkan lebar jalur teoritikal maksimum modul, diukur dalam Megabyte per saat (MB/s).
+                <p class="mt-2 p-3 bg-gray-100 rounded-lg border border-gray-300">
+                    **Formula:** (Kelajuan Data / 8) * 64 = Lebar Jalur (MB/s)
+                </p>
+                Contoh:
+                <ul class="list-disc ml-6 space-y-2">
+                    <li>RAM DDR4-3200 dikenali sebagai **PC4-25600**. (3200 x 8 byte per pusingan = 25,600 MB/s).</li>
+                    <li>RAM DDR5-6000 dikenali sebagai **PC5-48000**.</li>
+                </ul>
+            </p>
+
+            <!-- 6. ECC RAM --><h2 class="text-3xl font-bold mt-8 mb-4 text-gray-800 border-b-2 pb-2 border-indigo-200">
+                6. ECC RAM (Error-Correcting Code)
+            </h2>
+            <p>
+                **ECC RAM** adalah jenis memori khusus yang mempunyai keupayaan untuk mengesan dan membetulkan kerosakan data dalam memori.
+            </p>
+            <ul class="list-disc ml-6 space-y-2">
+                <li>
+                    **Fungsi:** Menggunakan bit tambahan (pariti) untuk menyemak ketepatan data. Ia amat penting dalam aplikasi kritikal di mana ralat data tidak boleh diterima, seperti pelayan (servers) dan stesen kerja saintifik.
+                </li>
+                <li>
+                    **Perbezaan:** ECC RAM biasanya sedikit lebih mahal dan mempunyai prestasi yang sedikit lebih perlahan (disebabkan oleh proses semakan ralat). Ia memerlukan motherboard dan CPU yang menyokong fungsi ECC.
+                </li>
+            </ul>
+
+            <!-- 7. BERAPA BANYAK RAM YANG SAYA PERLUKAN --><h2 class="text-3xl font-bold mt-8 mb-4 text-gray-800 border-b-2 pb-2 border-indigo-200">
+                7. Ringkasan: Berapa Banyak RAM Yang Saya Perlukan?
+            </h2>
+            <p>
+                Jumlah RAM yang diperlukan bergantung pada cara anda menggunakan komputer:
+            </p>
+            <table class="min-w-full divide-y divide-gray-200 mt-4">
+                <thead class="bg-indigo-500 text-white">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Penggunaan</th>
+                        <th class="px-6 py-4 text-left text-xs font-medium uppercase tracking-wider">Cadangan RAM</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <tr class="hover:bg-indigo-50 transition duration-150">
+                        <td class="px-6 py-4 whitespace-nowrap">Melayari Web Asas & Dokumen</td>
+                        <td class="px-6 py-4 whitespace-nowrap">8 GB</td>
+                    </tr>
+                    <tr class="hover:bg-indigo-50 transition duration-150">
+                        <td class="px-6 py-4 whitespace-nowrap">Gaming Standard, Suntingan Foto Ringkas</td>
+                        <td class="px-6 py-4 whitespace-nowrap">16 GB (Sweet Spot)</td>
+                    </tr>
+                    <tr class="hover:bg-indigo-50 transition duration-150">
+                        <td class="px-6 py-4 whitespace-nowrap">Penyuntingan Video 4K, Stesen Kerja Profesional, Gaming Prestasi Tinggi</td>
+                        <td class="px-6 py-4 whitespace-nowrap">32 GB atau Lebih</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <!-- FOOTER --><footer class="text-center mt-12 py-4 border-t border-gray-300 text-gray-500">
+            <p>&copy; 2025 Tugasan Blog Dinamik. Semua Hak Cipta Terpelihaja.</p>
+        </footer>
+
+    </div>
+
+    <!-- JAVASCRIPT THREE.JS UNTUK VISUALISASI 3D --><script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('ram-container');
+            const loadingText = document.getElementById('loading');
+            const statusText = document.getElementById('status-text');
+            
+            // 1. Scene Setup
+            let scene, camera, renderer, ramModel;
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+            let planet, stars = [];
+
+            // Fungsi untuk menukar status teks di bawah 3D
+            const updateStatus = (message) => {
+                statusText.textContent = `Status: ${message}`;
+            };
+
+            const init = () => {
+                // Kamera
+                camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+                camera.position.z = 15;
+
+                // Scene
+                scene = new THREE.Scene();
+                scene.background = new THREE.Color(0x1a202c); // Latar belakang gelap
+
+                // Cahaya
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+                scene.add(ambientLight);
+                const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight.position.set(5, 5, 5).normalize();
+                scene.add(directionalLight);
+                
+                // Cahaya Sekunder untuk kesan lebih dramatik
+                const pointLight = new THREE.PointLight(0xadd8e6, 0.5, 100); // Cahaya biru muda
+                pointLight.position.set(-10, 5, 10);
+                scene.add(pointLight);
+
+                // Renderer
+                renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                renderer.setPixelRatio(window.devicePixelRatio);
+                container.appendChild(renderer.domElement);
+
+                // 2. RAM Model (Geometri)
+                // Papan PCB Utama (Base PCB)
+                const pcbGeometry = new THREE.BoxGeometry(10, 3, 0.5);
+                const pcbMaterial = new THREE.MeshStandardMaterial({ color: 0x2d3748, metalness: 0.2, roughness: 0.7 }); // Kelabu gelap
+                ramModel = new THREE.Mesh(pcbGeometry, pcbMaterial);
+
+                // Cip Memori (Memory Chips)
+                const chipGeometry = new THREE.BoxGeometry(1.2, 0.8, 0.3);
+                const chipMaterial = new THREE.MeshStandardMaterial({ color: 0x4299e1, metalness: 0.6, roughness: 0.2 }); // Biru terang
+                
+                // Letakkan beberapa cip di atas papan PCB
+                const numChips = 8;
+                for (let i = 0; i < numChips; i++) {
+                    const chip = new THREE.Mesh(chipGeometry, chipMaterial);
+                    // Susun cip di sepanjang sumbu X
+                    chip.position.set(-4 + i * (10 / (numChips - 1)), 0.25, 0); 
+                    ramModel.add(chip);
+                }
+
+                // Kontak Emas (Golden Contacts) - Sisi Bawah
+                const contactGeometry = new THREE.BoxGeometry(9.5, 0.1, 0.5);
+                const contactMaterial = new THREE.MeshStandardMaterial({ color: 0xffa000, metalness: 0.9, roughness: 0.1 }); // Emas
+                const contacts = new THREE.Mesh(contactGeometry, contactMaterial);
+                contacts.position.y = -1.5; // Letakkan di bawah
+                ramModel.add(contacts);
+
+                scene.add(ramModel);
+
+                // 3. Menambah Latar Belakang yang Lebih Baik
+                // Planet/Sfera Bercahaya
+                const planetGeometry = new THREE.SphereGeometry(3, 32, 32);
+                const planetMaterial = new THREE.MeshPhongMaterial({ color: 0x8a2be2, emissive: 0x5a2be2 }); // Ungu dengan cahaya
+                planet = new THREE.Mesh(planetGeometry, planetMaterial);
+                planet.position.set(12, 8, -20); // Letakkan di latar belakang
+                scene.add(planet);
+
+                // Bintang
+                const starGeometry = new THREE.BufferGeometry();
+                const starVertices = [];
+                for (let i = 0; i < 500; i++) {
+                    const x = (Math.random() - 0.5) * 200;
+                    const y = (Math.random() - 0.5) * 200;
+                    const z = (Math.random() - 0.5) * 200;
+                    starVertices.push(x, y, z);
+                }
+                starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+                const starMaterial = new THREE.PointsMaterial({ color: 0xffffff, size: 0.1, transparent: true, opacity: 0.8 });
+                stars = new THREE.Points(starGeometry, starMaterial);
+                scene.add(stars);
+
+                // Sembunyikan teks memuatkan
+                loadingText.style.display = 'none';
+
+                // 4. Tambah Interaksi (Putaran Dinamik)
+                container.addEventListener('mousedown', onMouseDown, false);
+                container.addEventListener('mouseup', onMouseUp, false);
+                container.addEventListener('mousemove', onMouseMove, false);
+                container.addEventListener('touchstart', onTouchStart, false);
+                container.addEventListener('touchend', onTouchEnd, false);
+                container.addEventListener('touchmove', onTouchMove, false);
+
+                // Pengendali Saiz Semula
+                window.addEventListener('resize', onWindowResize, false);
+                
+                // Mulakan Animasi
+                animate();
+
+                updateStatus("Klik & Seret untuk memutar RAM!");
+            };
+
+            const onWindowResize = () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            };
+
+            // Fungsi Mouse Down/Touch Start
+            const handleStart = (clientX, clientY) => {
+                isDragging = true;
+                previousMousePosition.x = clientX;
+                previousMousePosition.y = clientY;
+                container.style.cursor = 'grabbing';
+            };
+
+            // Fungsi Mouse Up/Touch End
+            const handleEnd = () => {
+                isDragging = false;
+                container.style.cursor = 'grab';
+            };
+
+            // Fungsi Mouse Move/Touch Move
+            const handleMove = (clientX, clientY) => {
+                if (!isDragging) return;
+
+                const deltaX = clientX - previousMousePosition.x;
+                const deltaY = clientY - previousMousePosition.y;
+
+                // Putar model berdasarkan pergerakan tetikus
+                ramModel.rotation.y += deltaX * 0.01;
+                ramModel.rotation.x += deltaY * 0.01;
+
+                previousMousePosition.x = clientX;
+                previousMousePosition.y = clientY;
+            };
+
+            // Pengendali Desktop
+            const onMouseDown = (event) => {
+                handleStart(event.clientX, event.clientY);
+            };
+            const onMouseUp = () => {
+                handleEnd();
+            };
+            const onMouseMove = (event) => {
+                handleMove(event.clientX, event.clientY);
+            };
+
+            // Pengendali Mudah Alih (Touch)
+            const onTouchStart = (event) => {
+                if (event.touches.length === 1) {
+                    handleStart(event.touches[0].clientX, event.touches[0].clientY);
+                }
+            };
+            const onTouchEnd = () => {
+                handleEnd();
+            };
+            const onTouchMove = (event) => {
+                if (event.touches.length === 1) {
+                    // Mencegah skrol apabila memutar 3D
+                    event.preventDefault(); 
+                    handleMove(event.touches[0].clientX, event.touches[0].clientY);
+                }
+            };
+
+            // 5. Loop Animasi
+            let clock = new THREE.Clock();
+            const animate = () => {
+                requestAnimationFrame(animate);
+
+                const delta = clock.getDelta();
+
+                // Putaran automatik perlahan untuk RAM jika tidak ditarik
+                if (!isDragging) {
+                    ramModel.rotation.y += 0.002;
+                }
+
+                // Animasi planet latar belakang
+                if (planet) {
+                    planet.rotation.y += 0.001;
+                    planet.rotation.x += 0.0005;
+                }
+
+                // Animasi bintang latar belakang (bergerak perlahan ke arah pengguna)
+                if (stars.geometry.attributes.position) {
+                    const positions = stars.geometry.attributes.position.array;
+                    for (let i = 2; i < positions.length; i += 3) {
+                        positions[i] += 0.05; // Gerakkan bintang ke depan
+                        if (positions[i] > camera.position.z + 10) { // Jika terlalu dekat, letakkan semula di belakang
+                            positions[i] = -200;
+                        }
+                    }
+                    stars.geometry.attributes.position.needsUpdate = true;
+                }
+
+                renderer.render(scene, camera);
+            };
+
+            // Inisialisasi
+            if (THREE.REVISION === '128') {
+                 // Memulakan dengan sedikit putaran awal untuk paparan yang lebih baik
+                 window.onload = function() {
+                    init();
+                    ramModel.rotation.y = 0.5;
+                    ramModel.rotation.x = 0.2;
+                };
+            } else {
+                console.error("Three.js tidak dimuatkan dengan betul.");
+                loadingText.textContent = "Gagal memuatkan Three.js.";
+            }
+        });
+    </script>
+
+</body>
+</html>
 
